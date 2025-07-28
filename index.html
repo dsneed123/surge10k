@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surge10K - TikTok Shop Trend Alerts</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #667eea;
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-top: 80px;
+            padding: 4rem 0;
+            text-align: center;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(255, 107, 107, 0.4);
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255, 107, 107, 0.6);
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 10px 30px rgba(255, 107, 107, 0.4); }
+            50% { box-shadow: 0 15px 40px rgba(255, 107, 107, 0.6); }
+            100% { box-shadow: 0 10px 30px rgba(255, 107, 107, 0.4); }
+        }
+
+        /* Exclusive Banner */
+        .exclusive-banner {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            text-align: center;
+            padding: 1.5rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .exclusive-banner h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .exclusive-banner p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        main {
+            background: white;
+            margin: 2rem 0;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        section {
+            padding: 4rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .testimonials .section-title {
+            background: none;
+            -webkit-background-clip: initial;
+            -webkit-text-fill-color: white;
+            background-clip: initial;
+            color: white;
+        }
+
+        /* About Section */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .about-text h3 {
+            color: #333;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .about-text p {
+            margin-bottom: 1.5rem;
+            color: #666;
+            line-height: 1.8;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #f6f9fc 0%, #e9ecef 100%);
+            border-radius: 15px;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+            display: block;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Features Section */
+        .features {
+            background: linear-gradient(135deg, #f6f9fc 0%, #e9ecef 100%);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        /* How It Works */
+        .how-it-works {
+            padding: 4rem 0;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .step {
+            text-align: center;
+            position: relative;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0 auto 1rem;
+        }
+
+        /* Testimonials Placeholder */
+        .testimonials {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .testimonial-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .testimonial-author {
+            font-weight: bold;
+            opacity: 0.9;
+        }
+
+        /* Discord CTA Section */
+        .discord-cta {
+            text-align: center;
+            padding: 4rem 0;
+            background: linear-gradient(135deg, #5865f2 0%, #3b47cc 100%);
+            color: white;
+        }
+
+        .discord-cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .discord-cta p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .discord-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            background: white;
+            color: #5865f2;
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .discord-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Footer */
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">Surge10K</div>
+            <ul class="nav-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="#discord">Join Discord</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>The World's First TikTok Shop Trend Prediction Platform</h1>
+            <p>We're the pioneers who created TikTok Shop trend forecasting. Our exclusive proprietary algorithm is the first and only system designed specifically for predicting TikTok viral products before they explode.</p>
+            <a href="https://discord.gg/5Q3EjJhd" class="cta-button">Join Our Discord Community</a>
+        </div>
+    </section>
+
+    <section class="exclusive-banner">
+        <div class="container">
+            <h3>🔬 PROPRIETARY TECHNOLOGY PLATFORM</h3>
+            <p>Surge10K operates the industry's sole TikTok Shop trend forecasting system - a proprietary technology platform unavailable through any other provider.</p>
+        </div>
+    </section>
+
+    <main class="container">
+        <section id="about" class="about">
+            <h2 class="section-title">About Surge10K</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>Pioneer in TikTok Commerce Intelligence</h3>
+                    <p>Surge10K developed the world's first TikTok Shop trend prediction platform. Our proprietary software represents a breakthrough in social commerce intelligence, engineered specifically to decode TikTok's unique algorithmic patterns and forecast viral product opportunities 24-48 hours in advance.</p>
+                    <p>Our technology stands alone in the market. While traditional platforms adapt generic social media tools, our exclusive system was purpose-built for TikTok's ecosystem, utilizing advanced neural networks to analyze creator behavior patterns, hashtag velocity metrics, and engagement acceleration data that remain unavailable through any other service.</p>
+                    <p>Access to our proprietary intelligence platform is exclusively available through our Discord community, providing members with market insights that simply cannot be obtained elsewhere in the industry.</p>
+                </div>
+                <div class="stats">
+                    <div class="stat-item">
+                        <span class="stat-number">10K+</span>
+                        <span class="stat-label">Community Members</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">500+</span>
+                        <span class="stat-label">Successful Alerts Weekly</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">48hrs</span>
+                        <span class="stat-label">Average Lead Time</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">95%</span>
+                        <span class="stat-label">Accuracy Rate</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="features" class="features">
+            <h2 class="section-title">Why We're The Only Choice</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Real-Time Alerts</h3>
+                    <p>Get instant notifications when our algorithm detects products about to trend. Be first to market with 24-48 hour advance notice.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔬</div>
+                    <h3>Proprietary Technology Platform</h3>
+                    <p>Our advanced prediction algorithms represent the industry's only TikTok-native trend forecasting system, developed exclusively for social commerce intelligence.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🥇</div>
+                    <h3>Market Pioneer & Industry Leader</h3>
+                    <p>As the original developers of TikTok Shop trend prediction technology, we maintain an unmatched competitive advantage in social commerce forecasting.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📈</div>
+                    <h3>Profit Opportunities</h3>
+                    <p>Members consistently find high-ROI opportunities by acting on our alerts before products saturate the market.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔄</div>
+                    <h3>Continuous Updates</h3>
+                    <p>Our team constantly refines our detection methods and provides market updates throughout the day.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🏆</div>
+                    <h3>Proven Track Record</h3>
+                    <p>Thousands of successful product launches and profitable ventures started with our trend alerts.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="how-it-works" class="how-it-works">
+            <h2 class="section-title">How It Works</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Join Our Discord</h3>
+                    <p>Get instant access to our private Discord server with dedicated alert channels and community discussions.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Receive Alerts</h3>
+                    <p>Get real-time notifications about products our system identifies as trending opportunities.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Take Action</h3>
+                    <p>Research the opportunity, source products, create content, or develop your marketing strategy.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3>Profit & Share</h3>
+                    <p>Execute your strategy and share results with the community to help others succeed.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="testimonials">
+            <h2 class="section-title">Community Success Stories</h2>
+            <div class="testimonial-grid">
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"The trend predictions have been incredibly accurate. I've been able to get ahead of several viral products thanks to the early alerts."</p>
+                    <p class="testimonial-author">- Community Member</p>
+                </div>
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"Being part of this community has completely changed my approach to e-commerce. The insights and timing are invaluable."</p>
+                    <p class="testimonial-author">- Discord Member</p>
+                </div>
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"The quality of analysis and the supportive community make this Discord server worth every penny. Highly recommended!"</p>
+                    <p class="testimonial-author">- Active Member</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="discord" class="discord-cta">
+            <h2>Access Our Proprietary Intelligence Platform</h2>
+            <p>Join the exclusive community with access to the industry's only TikTok Shop trend prediction technology. Our proprietary platform is available solely through our Discord network.</p>
+            <a href="https://discord.gg/5Q3EjJhd" class="discord-button" target="_blank" rel="noopener noreferrer">
+                <span>🎮</span>
+                Join Our Exclusive Discord Community
+            </a>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Surge10K. All rights reserved. | TikTok Shop Trend Intelligence</p>
+        </div>
+    </footer>
+</body>
+</html>
